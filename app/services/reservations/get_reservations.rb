@@ -1,5 +1,5 @@
 module Reservations
-  class GetReservations
+  class GetAll
     include Dry::Transaction
 
     def initialize(reservations_repository: ReservationsRepository.new)
@@ -12,7 +12,7 @@ module Reservations
     private
 
     def check_reservations
-      $logger.info 'GetReservations::call'
+      $logger.info 'Reservations::GetAll::call'
 
       result = @reservations_repository.get_all.value_or(nil)
 

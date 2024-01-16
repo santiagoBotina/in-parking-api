@@ -49,3 +49,7 @@ end
 gem "dry-monads", "~> 1.6"
 
 gem "dry-transaction", "~> 0.15.0"
+
+gem "dry-schema", "~> 1.13"
+
+gem "byebug", "~> 11.1"

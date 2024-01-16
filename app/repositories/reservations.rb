@@ -1,5 +1,6 @@
 module Reservations
-  class ReservationsRepository
+  include BusinessCore
+  class ReservationsRepository < Repository
     include Dry::Monads[:maybe, :result]
 
     def initialize(
@@ -15,7 +16,22 @@ module Reservations
         result = @reservations.all
         Maybe(result)
       rescue StandardError => e
-        Failure("Database error: #{e.message}")
+        fail_with_db_error('reservations', e.message)
+      end
+    end
+
+    def create(params)
+      begin
+        $logger.info "ReservationsRepository::create - params: #{params}"
+
+        reservation = @reservations.new(params)
+
+        unless reservation.save!
+          return fail_with_db_error('reservations', 'There was an error processing the request')
+        end
+        Success({ status: :ok, data: reservation })
+      rescue StandardError => e
+        fail_with_db_error('reservations', e.message)
       end
     end
 

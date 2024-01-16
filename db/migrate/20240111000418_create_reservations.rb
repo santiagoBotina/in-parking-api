@@ -1,7 +1,6 @@
 class CreateReservations < ActiveRecord::Migration[7.1]
   def change
-    create_table :reservations, id: false do |t|
-      t.string :id
+    create_table :reservations, :primary_key => :id do |t|
       t.integer :user_id
       t.string :spot_id
       t.string :vehicle_plate

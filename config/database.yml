@@ -21,7 +21,7 @@ default: &default
 
 development:
   <<: *default
-  database: in_parking_back_development
+  database: in_parking_back_dev
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -79,6 +79,6 @@ test:
 #
 production:
   <<: *default
-  database: in_parking_back_production
+  database: in_parking_back_prod
   username: in_parking_back
   password: <%= ENV["IN_PARKING_BACK_DATABASE_PASSWORD"] %>

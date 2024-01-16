@@ -1,3 +1,7 @@
 class Reservation < ApplicationRecord
-  enum reservation_type: [:ONE_TIME, :WEEKLY, :MONTHLY]
+  enum reservation_type: {
+    one_time: "ONE_TIME",
+    weekly: "WEEKLY",
+    monthly: "MONTHLY"
+  }
 end

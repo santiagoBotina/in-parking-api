@@ -1,24 +1,30 @@
 module Reservations
-  class Create
-    include Dry::Transaction
+  include BusinessCore
+  class Create < BusinessCore::Operation
 
     def initialize(reservations_repository: ReservationsRepository.new)
       @reservations_repository = reservations_repository
       super
     end
 
-    step :check_reservations
+    step :validate_input
+    step :create
 
     private
 
-    def check_reservations
-      $logger.info 'GetReservations::call'
+    def validate_input(input)
+      $logger.info "Reservations::Create::validate_input - input: #{input}"
 
-      result = @reservations_repository.get_all.value_or(nil)
+      check_schema_validation Contracts::ReservationSchema.call(input)
+    end
 
-      result.nil? ?
-        Failure({ status: :internal_server_error, data: 'There was an error processing the request' }) :
-        Success({ status: :ok, data: result })
+    def create(input)
+      $logger.info 'Reservations::Create::create'
+      begin
+        @reservations_repository.create(input)
+      rescue StandardError => e
+        $logger.info "Reservations::Create::create - error: #{e}"
+      end
     end
 
   end
