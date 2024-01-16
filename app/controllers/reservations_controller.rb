@@ -1,6 +1,10 @@
   class ReservationsController < ApplicationController
+    include Unwrap
     def index
+      $logger.info "ReservationsController::index"
+
       result = Reservations::GetReservations.new.call
-      render json: result, status: :ok
+
+      unwrap_monad_result(result)
     end
   end

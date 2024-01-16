@@ -1,5 +1,5 @@
 module Reservations
-  class GetReservations
+  class Create
     include Dry::Transaction
 
     def initialize(reservations_repository: ReservationsRepository.new)
