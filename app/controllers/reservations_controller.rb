@@ -20,6 +20,8 @@ class ReservationsController < ApplicationController
   def show
     $logger.info "ReservationsController::show - reservation_id: #{params[:id]}"
 
-    unwrap_monad_result(GetById.new.call(params[:id]))
+    get_by_reservation_id_command = { id: params[:id] }
+
+    unwrap_monad_result(GetById.new.call(get_by_reservation_id_command))
   end
 end

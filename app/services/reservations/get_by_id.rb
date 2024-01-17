@@ -11,10 +11,10 @@ module Reservations
 
     private
 
-    def get_reservation(id)
+    def get_reservation(command)
       $logger.info "Reservation::GetByID::get_by_id - id: #{id}"
 
-      reservation = @reservations_repository.get_by_id(id).value_or(nil)
+      reservation = @reservations_repository.get_one(command).value_or(nil)
       if reservation.nil?
         Failure({
           status: :not_found,

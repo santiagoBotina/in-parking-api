@@ -35,11 +35,11 @@ module Reservations
       end
     end
 
-    def get_by_id(id)
+    def get_one(command)
       begin
         $logger.info "ReservationsRepository::get_by_id - id: #{id}"
 
-        result = @reservations.find_by(id: id)
+        result = @reservations.find_by(command)
         Maybe(result)
       rescue StandardError => e
         fail_with_db_error('reservations', e.message)
