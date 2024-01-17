@@ -19,11 +19,19 @@ module BusinessCore
   class Repository
     include Dry::Monads[:maybe, :result, :try]
 
-    def fail_with_db_error(entity, error_message)
+    HTTP_METHODS = {
+      GET: 'GET',
+      POST: 'POST',
+      PUT: 'PUT',
+      DELETE: 'DELETE',
+      PATCH: 'PATCH',
+    }.freeze
+
+    def fail_with_db_error(entity, error_message = nil, operation)
       $logger.fatal error_message
       Failure({
         status: :internal_server_error,
-        data: "Database error while creating #{entity}: #{error_message}"
+        data: "Unexpected database error, operation: #{operation}, entity: #{entity}: #{error_message}"
       })
     end
   end

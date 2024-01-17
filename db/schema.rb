@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_17_212638) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_17_223049) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "legal_id_type", ["CC", "NIT", "PP", "CE", "TI"]
   create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED"]
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
 
@@ -30,4 +31,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_212638) do
     t.enum "status", default: "ACTIVE", null: false, enum_type: "reservation_status"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.enum "legal_id_type", null: false, enum_type: "legal_id_type"
+    t.string "legal_id", null: false
+    t.string "email", null: false
+    t.string "phone", null: false
+    t.string "password", null: false
+    t.string "status", default: "INACTIVE", null: false
+    t.boolean "is_verified", default: false, null: false
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+  end
+
+  add_foreign_key "reservations", "users"
 end

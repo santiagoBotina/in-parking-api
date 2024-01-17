@@ -16,7 +16,7 @@ module Reservations
         result = @reservations.all
         Maybe(result)
       rescue StandardError => e
-        fail_with_db_error('reservations', e.message)
+        fail_with_db_error('reservations', e.message, HTTP_METHODS[:GET])
       end
     end
 
@@ -31,18 +31,18 @@ module Reservations
         end
         Success({ status: :ok, data: reservation })
       rescue StandardError => e
-        fail_with_db_error('reservations', e.message)
+        fail_with_db_error('reservations', e.message, HTTP_METHODS[:POST])
       end
     end
 
     def get_one(command)
       begin
-        $logger.info "ReservationsRepository::get_by_id - id: #{id}"
+        $logger.info "ReservationsRepository::get_one - command: #{command}"
 
         result = @reservations.find_by(command)
         Maybe(result)
       rescue StandardError => e
-        fail_with_db_error('reservations', e.message)
+        fail_with_db_error('reservations', e.message, HTTP_METHODS[:GET])
       end
     end
 
