@@ -5,9 +5,4 @@ class Reservation < ApplicationRecord
     MONTHLY: "MONTHLY"
   }
 
-  enum reservation_status: {
-    ACTIVE: "ACTIVE",
-    CANCELLED: "CANCELLED",
-    MISSED: "MISSED"
-  }
 end
