@@ -7,8 +7,6 @@ module BusinessCore
       if validation.success?
         Success(validation.to_h)
       else
-        $logger.info "BusinessCore::Operation::check_schema_validation - validation: #{validation.to_h}"
-
         Failure({
           status: :unprocessable_entity,
           data:  validation.errors

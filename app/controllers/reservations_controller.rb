@@ -16,4 +16,10 @@ class ReservationsController < ApplicationController
     $logger.info "ReservationsController::create - result: #{result}"
     unwrap_monad_result(result)
   end
+
+  def show
+    $logger.info "ReservationsController::show - reservation_id: #{params[:id]}"
+
+    unwrap_monad_result(GetById.new.call(params[:id]))
+  end
 end

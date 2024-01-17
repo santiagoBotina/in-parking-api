@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_16_215113) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_17_212638) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED"]
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
 
   create_table "reservations", force: :cascade do |t|
@@ -26,6 +27,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_16_215113) do
     t.datetime "reserved_until"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.enum "status", default: "ACTIVE", null: false, enum_type: "reservation_status"
   end
 
 end

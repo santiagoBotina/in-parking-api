@@ -7,7 +7,6 @@ module ControllerHelper
     if result.success?
       render json: result.value!, status: result.value![:status]
     else
-      byebug
       render json: result.failure, status: result.failure[:status]
     end
   end

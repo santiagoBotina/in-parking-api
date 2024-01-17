@@ -1,7 +1,13 @@
 class Reservation < ApplicationRecord
   enum reservation_type: {
-    one_time: "ONE_TIME",
-    weekly: "WEEKLY",
-    monthly: "MONTHLY"
+    ONE_TIME: "ONE_TIME",
+    WEEKLY: "WEEKLY",
+    MONTHLY: "MONTHLY"
+  }
+
+  enum reservation_status: {
+    ACTIVE: "ACTIVE",
+    CANCELLED: "CANCELLED",
+    MISSED: "MISSED"
   }
 end
