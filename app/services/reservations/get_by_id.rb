@@ -2,7 +2,9 @@ module Reservations
   include BusinessCore
   class GetById < BusinessCore::Operation
 
-    def initialize(reservations_repository: ReservationsRepository.new)
+    def initialize(
+      reservations_repository: ReservationsRepository.new
+    )
       @reservations_repository = reservations_repository
       super
     end

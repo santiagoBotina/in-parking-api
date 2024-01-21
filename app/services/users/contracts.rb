@@ -1,6 +1,5 @@
 module Users
   include Validators
-
   USER_LEGAL_ID_TYPES = %w[CC NIT PP CE TI].freeze
 
   module UserLegalIdTypes
@@ -16,11 +15,10 @@ module Users
       required(:first_name).filled(:string)
       required(:last_name).filled(:string)
       required(:legal_id_type).filled(:string) { included_in?(USER_LEGAL_ID_TYPES) }
-      required(:email).filled(:string) { str? & no_spaces? & email? }
+      required(:legal_id).filled(:string)
+      required(:email).filled(:string, format?: Validators::EMAIL_REGEX)
       required(:phone).filled(:string)
       required(:password).filled(:string)
-      optional(:status, :string).maybe(:string)
-      optional(:is_verified, :bool).maybe { bool? }
     end
   end
 end

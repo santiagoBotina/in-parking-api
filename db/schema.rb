@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_17_223049) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_21_205225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_223049) do
     t.boolean "is_verified", default: false, null: false
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string "cognito_id"
   end
 
   add_foreign_key "reservations", "users"

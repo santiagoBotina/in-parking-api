@@ -9,8 +9,4 @@ class User < ApplicationRecord
     TI: 'TI'
   }
 
-  enum status_type: {
-    ACTIVE: "ACTIVE",
-    INACTIVE: "INACTIVE",
-  }
 end

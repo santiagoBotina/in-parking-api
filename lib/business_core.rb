@@ -14,6 +14,14 @@ module BusinessCore
       end
     end
 
+    def fail_with_conflict(entity, error_message = nil)
+      $logger.fatal "Operation::fail_with_conflict - Error: #{error_message}"
+      Failure({
+                status: :conflict,
+                data: "Error: #{entity} already exist"
+              })
+    end
+
   end
 
   class Repository
