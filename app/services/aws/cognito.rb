@@ -39,6 +39,19 @@ module Aws
       @client.sign_up(auth_object).to_h
     end
 
+    def self.confirm_sign_up(input)
+      $logger.info "Aws::Cognito - confirm_sign_up - input: #{input}"
+
+      sign_up_info = {
+        client_id: CLIENT_ID,
+        secret_hash: calculate_secret_hash(CLIENT_ID, CLIENT_SECRET, input[:email]),
+        username: input[:email],
+        confirmation_code: input[:code],
+      }
+
+      @client.confirm_sign_up(sign_up_info)
+    end
+
     private
 
     def self.calculate_secret_hash(client_id, client_secret, username)

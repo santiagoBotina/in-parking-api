@@ -42,6 +42,14 @@ module BusinessCore
         data: "Unexpected database error, operation: #{operation}, entity: #{entity}: #{error_message}"
       })
     end
+
+    def fail_with_not_found(entity)
+      $logger.fatal "Entity #{entity} not found"
+      Failure({
+        status: :not_found,
+        data: "Entity #{entity} not found"
+      })
+    end
   end
 
 end

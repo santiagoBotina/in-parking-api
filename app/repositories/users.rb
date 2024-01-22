@@ -35,5 +35,18 @@ module Users
       end
     end
 
+    def update(input)
+      begin
+        $logger.info "UsersRepository::update - email: #{input[:email]} - input: #{input}"
+
+        user = input[:user]
+
+        user.update(input[:command])
+        Success({ status: :ok, data: user })
+      rescue StandardError => e
+        fail_with_db_error('users', e.message, HTTP_METHODS[:PUT])
+      end
+    end
+
   end
 end

@@ -1,0 +1,35 @@
+module Users
+  include BusinessCore
+  class Update < BusinessCore::Operation
+
+    def initialize(users_repository: UsersRepository.new)
+      @users_repository = users_repository
+      super
+    end
+
+    step :get_user_by_email
+    step :update_user
+
+    private
+
+    def get_user_by_email(input)
+      $logger.info "Users::Update::get_user_by_email - email: #{input[:email]}"
+
+      user = @users_repository.get_one({email: input[:email]}).value_or(nil)
+      if user.nil?
+        Failure({
+                  status: :not_found,
+                  data: "User with email: #{value} not found"
+                })
+      else
+        Success(input.merge user: user)
+      end
+    end
+
+    def update_user(input)
+      $logger.info "Users::Update::update_user - input: #{input}"
+
+      @users_repository.update(input)
+    end
+  end
+end

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :reservations
   resources :users
 
+  post '/auth/confirm_sign_up', to: 'auth#confirm_sign_up'
+
   # Defines the root path route ("/")
   # root "posts#index"
 end
