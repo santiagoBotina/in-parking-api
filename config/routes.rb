@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :users
 
   post '/auth/confirm_sign_up', to: 'auth#confirm_sign_up'
+  post '/auth/sign_up', to: 'auth#sign_up'
+  post '/auth/login', to: 'auth#login'
 
   # Defines the root path route ("/")
   # root "posts#index"

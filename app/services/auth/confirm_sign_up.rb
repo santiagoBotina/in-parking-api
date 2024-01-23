@@ -3,7 +3,7 @@ module Auth
   include Aws
   include Users
 
-  class ConfirmSignUp < Operation
+  class ConfirmSignUp < BusinessCore::Operation
     def initialize(
       cognito_client: Aws::Cognito,
       update_user_use_case: Users::Update.new
@@ -27,6 +27,8 @@ module Auth
       $logger.info "Auth::ConfirmSignUp::confirm_sign_up - input: #{input}"
 
       @cognito_client.confirm_sign_up(input)
+
+      Success(input)
     rescue Aws::CognitoIdentityProvider::Errors::CodeMismatchException
       $logger.error "Auth::ConfirmSignUp::confirm_sign_up::ERROR - CODE MISMATCH"
 
@@ -34,7 +36,7 @@ module Auth
     rescue StandardError => e
       $logger.error "Auth::ConfirmSignUp::confirm_sign_up::ERROR - unknown #{e}"
 
-      Failure({status: :internal_server, data: 'Something went wrong confirming the user'})
+      Failure({status: :internal_server_error, data: 'Something went wrong confirming the user'})
     end
 
     def update_on_db(input)

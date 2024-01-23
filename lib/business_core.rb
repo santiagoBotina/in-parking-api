@@ -22,6 +22,45 @@ module BusinessCore
               })
     end
 
+    def fail_with_bad_request(error_message = nil)
+      $logger.fatal "Operation::fail_with_bad_request - Error: #{error_message}"
+      Failure({
+                status: :bad_request,
+                data: "Error: #{error_message}"
+              })
+    end
+
+    def fail_with_unauthorized(error_message = nil)
+      $logger.fatal "Operation::fail_with_unauthorized - Error: #{error_message}"
+      Failure({
+                status: :unauthorized,
+                data: "Error: #{error_message}"
+              })
+    end
+
+    def fail_with_forbidden(error_message = nil)
+      $logger.fatal "Operation::fail_with_forbidden - Error: #{error_message}"
+      Failure({
+                status: :forbidden,
+                data: "Error: #{error_message}"
+              })
+    end
+
+    def fail_with_server_error(error_message = nil)
+      $logger.fatal "Operation::fail_with_internal_server_error - Error: #{error_message}"
+      Failure({
+                status: :internal_server_error,
+                data: "Error: #{error_message}"
+              })
+    end
+
+    def success_with_data(data)
+      Success({
+        status: :ok,
+        data: data
+      })
+    end
+
   end
 
   class Repository

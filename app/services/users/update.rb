@@ -13,13 +13,16 @@ module Users
     private
 
     def get_user_by_email(input)
-      $logger.info "Users::Update::get_user_by_email - email: #{input[:email]}"
+      email = input[:email]
 
-      user = @users_repository.get_one({email: input[:email]}).value_or(nil)
+      $logger.info "Users::Update::get_user_by_email - email: #{email}"
+
+
+      user = @users_repository.get_one({email: email}).value_or(nil)
       if user.nil?
         Failure({
                   status: :not_found,
-                  data: "User with email: #{value} not found"
+                  data: "User with email: #{email} not found"
                 })
       else
         Success(input.merge user: user)

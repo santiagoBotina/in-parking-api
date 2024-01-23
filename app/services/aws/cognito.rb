@@ -11,14 +11,15 @@ module Aws
     )
 
     def self.authenticate(user_object)
+      $logger.info "Aws::Cognito - authenticate - user_object: #{user_object}"
+
       auth_object = {
-        user_pool_id: POOL_ID,
         client_id: CLIENT_ID,
         auth_flow: AUTH_FLOW,
         auth_parameters: user_object
       }
 
-      @client.admin_initiate_auth(auth_object)
+      @client.initiate_auth(auth_object).authentication_result
     end
 
     def self.sign_out(access_token)
@@ -31,7 +32,6 @@ module Aws
       auth_object = {
         client_id: CLIENT_ID,
         username: input[:email],
-        secret_hash: calculate_secret_hash(CLIENT_ID, CLIENT_SECRET, input[:email]),
         password: input[:password],
         user_attributes: build_user_attributes(input)
       }
@@ -44,7 +44,6 @@ module Aws
 
       sign_up_info = {
         client_id: CLIENT_ID,
-        secret_hash: calculate_secret_hash(CLIENT_ID, CLIENT_SECRET, input[:email]),
         username: input[:email],
         confirmation_code: input[:code],
       }
@@ -54,9 +53,9 @@ module Aws
 
     private
 
-    def self.calculate_secret_hash(client_id, client_secret, username)
-      data = "#{username}#{client_id}"
-      Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', client_secret, data))
+    def self.calculate_secret_hash(username)
+      data = "#{username}#{CLIENT_ID}"
+      Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', CLIENT_SECRET, data))
     end
 
     def self.build_user_attributes(input)

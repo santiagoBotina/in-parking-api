@@ -3,21 +3,9 @@ class UsersController < ApplicationController
   include Users
 
   def initialize(
-    get_by_id: GetById.new,
-    create: Create.new
+    get_by_id: GetById.new
   )
     @get_by_id = get_by_id
-    @create = create
-  end
-
-  def create
-    $logger.info 'UsersController::create'
-
-    body = parse_request_body(request.body.read)
-
-    result= @create.call(body)
-
-    unwrap_monad_result(result)
   end
 
   def show

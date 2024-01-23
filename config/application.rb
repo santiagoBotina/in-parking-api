@@ -1,5 +1,6 @@
 require_relative "boot"
 require 'dry/monads/all'
+require_relative "../lib/middleware/verify_token"
 
 require "rails/all"
 $logger ||= Logger.new(STDOUT)
@@ -14,6 +15,8 @@ module InParkingBack
     # Initialize configuration defaults for originally generated Rails version.
     config.autoload_lib(ignore: %w(lib))
     config.load_defaults 7.1
+
+    config.middleware.use Middleware::VerifyToken
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
