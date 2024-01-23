@@ -44,9 +44,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
 end
 
-group :development do
-  gem 'dotenv-rails'
-end
+gem 'dotenv-rails'
 
 gem 'aws-sdk-cognitoidentity'
 gem 'aws-sdk-cognitoidentityprovider'

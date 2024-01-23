@@ -21,6 +21,7 @@ module Middleware
       token = request.headers['HTTP_AUTHORIZATION']
 
       unless token
+        byebug
         error = { status: :unauthorized, data: 'Invalid or missing token' }
 
         return [
@@ -30,23 +31,34 @@ module Middleware
         ]
       end
 
-      validate_token(extract_token(token))
+      validation_result = validate_token(extract_token(token))
+
+      return validation_result unless validation_result.nil?
 
       @app.call(env)
     end
 
     def validate_token(token)
       jwk_set = JSON.parse(Faraday.get(AWS_VERIFY_TOKEN).body)
-
       JWT.decode(token, nil, true, { jwks: jwk_set, algorithms: ['RS256'] })
+
+      nil
+    rescue JWT::ExpiredSignature
+      fail_verification(403, { status: :unauthorized, data: 'Expired token' })
     rescue JWT::DecodeError => e
-      [403, { 'Content-Type' => 'application/json' }, { status: :unauthorized, data: 'Invalid token' }]
+      fail_verification(403, { status: :unauthorized, data: 'Invalid token' })
     rescue StandardError => e
-      [
-        500,
-       { 'Content-Type' => 'application/json' },
-       { status: :internal_server_error, data: 'Something went wrong validating the token'}
-      ]
+      fail_verification
+    end
+
+    def fail_verification(
+      status_code = 500,
+      response = {
+        status: :internal_server_error,
+        data: 'Something went wrong validating the token'
+      }
+    )
+      [status_code, { 'Content-Type' => 'application/json' }, [response.to_json]]
     end
 
     def excluded_path?(path)
