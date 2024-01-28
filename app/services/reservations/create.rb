@@ -1,5 +1,4 @@
 module Reservations
-  include BusinessCore
   class Create < BusinessCore::Operation
 
     def initialize(

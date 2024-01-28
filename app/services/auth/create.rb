@@ -1,67 +1,24 @@
 module Auth
-  include BusinessCore
-  include Aws
-  include Users
-
   class Create < BusinessCore::Operation
-
     def initialize(
-      users_repository: Users::UsersRepository.new,
-      cognito_client: Aws::Cognito
+      create_user: Users::Create.new,
+      create_merchant: Merchants::Create.new
     )
-      @users_repository = users_repository
-      @cognito_client = cognito_client
+      @create_user = create_user
+      @create_merchant = create_merchant
       super
     end
 
-    step :validate_input
-    step :validate_if_user_exists
-    step :cognito_create_user
-    step :persist_user
+    step :call_operation
 
-    def validate_input(input)
-      $logger.info "Auth::Create::validate_input - input: #{input}"
+    def call_operation(input)
+      $logger.info "Auth::Create::call_operation - input: #{input}"
 
-      check_schema_validation Contracts::SignUpSchema.call(input)
-    end
+      role = input[:role]
 
-    def validate_if_user_exists(input)
-      $logger.info "Auth::Create::validate_if_user_exists - input: #{input}"
-
-      if user_exists_by_email({email: input[:email]})
-        $logger.info "Auth::Create::validate_if_user_exists - user EXISTS"
-        return fail_with_conflict("user")
-      end
-
-      Success(input)
-    end
-
-    def cognito_create_user(input)
-      $logger.info "Auth::Create::cognito_create_user - input: #{input}"
-
-      sign_up_info = @cognito_client.create_user(input)
-
-      Success(input.merge cognito_id: sign_up_info[:user_sub])
-    rescue Aws::CognitoIdentityProvider::Errors::UsernameExistsException
-      $logger.error "Auth::Create::cognito_create_user::ERROR - USERNAME ALREADY EXISTS"
-
-      Failure({status: :bad_request, data: 'Username already exists'})
-    rescue StandardError => e
-      $logger.error "Auth::Create::cognito_create_user::ERROR - unknown #{e}"
-
-      Failure({status: :internal_server_error, data: 'Something went wrong creating the user'})
-    end
-
-    def persist_user(input)
-      $logger.info "Auth::Create::persist_user - input: #{input}"
-
-      @users_repository.create(input)
-    end
-
-    private
-
-    def user_exists_by_email(command)
-      @users_repository.get_one(command).value_or(nil)
+      role === 'CONSUMER' ?
+        @create_user.call(input) :
+        @create_merchant.call(input)
     end
   end
 end

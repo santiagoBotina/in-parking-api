@@ -1,15 +1,13 @@
 module Auth
-  include BusinessCore
-  include Aws
-  include Users
-
   class ConfirmSignUp < BusinessCore::Operation
     def initialize(
       cognito_client: Aws::Cognito,
-      update_user_use_case: Users::Update.new
+      update_user_use_case: Users::Update.new,
+      update_merchant_use_case: Merchants::Update.new
     )
       @cognito_client = cognito_client
       @update_user_use_case = update_user_use_case
+      @update_merchant_use_case = update_merchant_use_case
       super
     end
 
@@ -26,17 +24,11 @@ module Auth
     def confirm_sign_up(input)
       $logger.info "Auth::ConfirmSignUp::confirm_sign_up - input: #{input}"
 
-      @cognito_client.confirm_sign_up(input)
+      confirmation_result = @cognito_client.confirm_sign_up(input)
+
+      return Failure(confirmation_result) if confirmation_result.has_key?(:error)
 
       Success(input)
-    rescue Aws::CognitoIdentityProvider::Errors::CodeMismatchException
-      $logger.error "Auth::ConfirmSignUp::confirm_sign_up::ERROR - CODE MISMATCH"
-
-      Failure({status: :bad_request, data: 'Code mismatch'})
-    rescue StandardError => e
-      $logger.error "Auth::ConfirmSignUp::confirm_sign_up::ERROR - unknown #{e}"
-
-      Failure({status: :internal_server_error, data: 'Something went wrong confirming the user'})
     end
 
     def update_on_db(input)
@@ -47,7 +39,11 @@ module Auth
         is_verified: true
       }
 
-      @update_user_use_case.call(input)
+      role = input.delete :role
+
+      role === 'CONSUMER' ?
+        @update_user_use_case.call(input) :
+        @update_merchant_use_case.call(input)
     end
 
   end

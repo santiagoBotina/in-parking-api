@@ -1,5 +1,4 @@
 module Reservations
-  include BusinessCore
   class GetById < BusinessCore::Operation
 
     def initialize(

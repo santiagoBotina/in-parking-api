@@ -1,5 +1,4 @@
 module Users
-  include BusinessCore
   class Update < BusinessCore::Operation
 
     def initialize(users_repository: UsersRepository.new)

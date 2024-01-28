@@ -10,15 +10,39 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_21_205225) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
+  create_enum "bank_account_type", ["SAVINGS", "CHECKING"]
   create_enum "legal_id_type", ["CC", "NIT", "PP", "CE", "TI"]
   create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED"]
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
+  create_enum "user_account_status", ["ACTIVE", "INACTIVE"]
+
+  create_table "merchants", force: :cascade do |t|
+    t.string "legal_name"
+    t.enum "legal_id_type", enum_type: "legal_id_type"
+    t.string "legal_id"
+    t.string "contact_name"
+    t.string "phone"
+    t.string "email"
+    t.string "address"
+    t.string "city"
+    t.enum "status", default: "INACTIVE", enum_type: "user_account_status"
+    t.enum "bank_account_type", enum_type: "bank_account_type"
+    t.string "bank_account_number"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.string "cognito_id"
+    t.string "description"
+    t.string "logo"
+    t.string "password"
+    t.boolean "is_verified", default: false
+    t.index ["legal_id"], name: "index_merchants_on_legal_id", unique: true
+  end
 
   create_table "reservations", force: :cascade do |t|
     t.integer "user_id"

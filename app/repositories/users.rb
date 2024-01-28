@@ -1,8 +1,5 @@
 module Users
-  include BusinessCore
-  class UsersRepository < Repository
-    include Dry::Monads[:maybe, :result]
-
+  class UsersRepository < BusinessCore::Repository
     def initialize(
       users_repo: User
     )

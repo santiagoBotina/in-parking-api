@@ -1,7 +1,5 @@
 module Reservations
-  class GetAll
-    include Dry::Transaction
-
+  class GetAll < BusinessCore::Operation
     def initialize(reservations_repository: ReservationsRepository.new)
       @reservations_repository = reservations_repository
       super

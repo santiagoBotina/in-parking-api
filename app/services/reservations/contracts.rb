@@ -1,7 +1,8 @@
 module Reservations
   RESERVATION_TYPES = %w[ONE_TIME WEEKLY MONTHLY].freeze
-  module Contracts
+  RESERVATION_STATUSES = %w[ACTIVE CANCELLED MISSED].freeze
 
+  module Contracts
     ReservationSchema = Dry::Schema.Params do
       required(:user_id).filled(:integer)
       required(:spot_id).filled(:integer)

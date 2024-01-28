@@ -1,6 +1,5 @@
 module Reservations
-  include BusinessCore
-  class ReservationsRepository < Repository
+  class ReservationsRepository < BusinessCore::Repository
     include Dry::Monads[:maybe, :result]
 
     def initialize(

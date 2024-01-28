@@ -1,7 +1,4 @@
 module Auth
-  include BusinessCore
-  include Aws
-
   class Login < BusinessCore::Operation
     def initialize(
       cognito_client: Aws::Cognito
@@ -22,7 +19,7 @@ module Auth
     def authenticate(input)
       $logger.info "Auth::Login::authenticate - input: #{input}"
 
-      auth_result = @cognito_client.authenticate(build_auth_object(input))
+      auth_result = @cognito_client.authenticate(build_auth_object(input), input[:role])
 
       Success({status: :ok, data: auth_result})
     rescue Aws::CognitoIdentityProvider::Errors::UserNotFoundException
