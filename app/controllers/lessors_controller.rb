@@ -1,6 +1,6 @@
-class MerchantsController < ApplicationController
+class LessorsController < ApplicationController
   include ControllerHelper
-  include Merchants
+  include Lessors
 
   def initialize(
     create: Create.new
@@ -9,7 +9,7 @@ class MerchantsController < ApplicationController
   end
 
   def create
-    $logger.info 'MerchantsController::create'
+    $logger.info 'LessorsController::create'
 
     body = parse_request_body(request.body.read)
 

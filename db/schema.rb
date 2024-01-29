@@ -22,11 +22,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
   create_enum "user_account_status", ["ACTIVE", "INACTIVE"]
 
-  create_table "merchants", force: :cascade do |t|
+  create_table "lessors", force: :cascade do |t|
     t.string "legal_name"
     t.enum "legal_id_type", enum_type: "legal_id_type"
     t.string "legal_id"
-    t.string "contact_name"
+    t.string "lessor_name"
     t.string "phone"
     t.string "email"
     t.string "address"
@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
     t.string "logo"
     t.string "password"
     t.boolean "is_verified", default: false
-    t.index ["legal_id"], name: "index_merchants_on_legal_id", unique: true
+    t.index ["legal_id"], name: "index_lessors_on_legal_id", unique: true
   end
 
   create_table "reservations", force: :cascade do |t|

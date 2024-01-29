@@ -2,7 +2,7 @@ module Auth
   include Validators
   module Contracts
     USER_LEGAL_ID_TYPES = %w[CC NIT PP CE TI].freeze
-    ROLES = %w[MERCHANT CONSUMER].freeze
+    ROLES = %w[LESSOR CONSUMER].freeze
 
     ConfirmSignUpSchema = Dry::Schema.Params do
       required(:email).filled(:string, format?: Validators::EMAIL_REGEX)

@@ -1,13 +1,11 @@
-module Merchants
-
-
+module Lessors
   LEGAL_ID_TYPES = %w[CC NIT PP CE RUC].freeze
   BANK_ACCOUNT_TYPES = %w[SAVINGS CHECKING].freeze
 
   module Contracts
     include Auth
 
-    CreateMerchantContract = Dry::Schema.Params do
+    CreateLessorContract = Dry::Schema.Params do
       required(:legal_name).filled(:string)
       required(:legal_id_type).filled(:string) { included_in?(Merchants::LEGAL_ID_TYPES) }
       required(:legal_id).filled(:string)

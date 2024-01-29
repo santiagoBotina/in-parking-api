@@ -12,7 +12,9 @@ module Reservations
 
     step :validate_input
     step :validate_if_user_exists
-    step :create
+    step :create_reservation
+    #TODO
+    #step :set_spot_as_reserved
 
     private
 
@@ -33,7 +35,7 @@ module Reservations
       Success(input)
     end
 
-    def create(input)
+    def create_reservation(input)
       $logger.info 'Reservations::Create::create'
       begin
         @reservations_repository.create(input)

@@ -1,10 +1,10 @@
 class CreateMerchants < ActiveRecord::Migration[7.1]
   def change
-    create_table :merchants do |t|
-      t.string :legal_name
+    create_table :lessors do |t|
+      t.string :legal_name, null: true
       t.text :legal_id_type
       t.string :legal_id
-      t.string :contact_name
+      t.string :lessor_name
       t.string :phone
       t.string :email
       t.string :address
@@ -15,6 +15,6 @@ class CreateMerchants < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-    add_index :merchants, :legal_id, unique: true
+    add_index :lessors, :legal_id, unique: true
   end
 end

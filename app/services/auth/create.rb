@@ -2,10 +2,10 @@ module Auth
   class Create < BusinessCore::Operation
     def initialize(
       create_user: Users::Create.new,
-      create_merchant: Merchants::Create.new
+      create_lessor: Lessors::Create.new
     )
       @create_user = create_user
-      @create_merchant = create_merchant
+      @create_lessor = create_lessor
       super
     end
 
@@ -18,7 +18,7 @@ module Auth
 
       role === 'CONSUMER' ?
         @create_user.call(input) :
-        @create_merchant.call(input)
+        @create_lessor.call(input)
     end
   end
 end

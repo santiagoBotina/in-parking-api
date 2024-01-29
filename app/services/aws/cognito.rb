@@ -30,8 +30,8 @@ module Aws
     def self.create_user(input)
       $logger.info "Aws::Cognito - create_user - input: #{input}"
 
-      user_attributes = input[:role] === 'MERCHANT' ?
-        build_merchant_attributes(input) :
+      user_attributes = input[:role] === 'LESSOR' ?
+        build_lessor_attributes(input) :
         build_user_attributes(input)
 
       auth_object = {
@@ -55,7 +55,7 @@ module Aws
     def self.confirm_sign_up(input)
       $logger.info "Aws::Cognito - confirm_sign_up - input: #{input}"
 
-      client_id = input[:role] === 'MERCHANT' ? MERCHANT_CLIENT_ID : CONSUMER_CLIENT_ID
+      client_id = input[:role] === 'MERCHANT' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
 
       sign_up_info = {
         client_id: client_id,
@@ -102,17 +102,16 @@ module Aws
       ]
     end
 
-    def self.build_merchant_attributes(input)
+    def self.build_lessor_attributes(input)
       [
         {
           name: 'custom:legal_name',
           value: input[:legal_name]
         },
         {
-          name: 'custom:contact_name',
+          name: 'custom:lessor_name',
           value: input[:contact_name]
         },
-
         {
           name: 'custom:legal_id_type',
           value: input[:legal_id_type]
@@ -129,11 +128,15 @@ module Aws
           name: 'address',
           value: input[:address]
         },
+        {
+          name: 'custom:city',
+          value: input[:contact_name]
+        },
       ]
     end
 
     def self.get_client_id(role)
-      role === 'MERCHANT' ? MERCHANT_CLIENT_ID : CONSUMER_CLIENT_ID
+      role === 'LESSOR' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
     end
 
   end
