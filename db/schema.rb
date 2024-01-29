@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -46,13 +46,24 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
 
   create_table "reservations", force: :cascade do |t|
     t.integer "user_id"
-    t.string "spot_id"
+    t.integer "spot_id"
     t.string "vehicle_plate"
     t.enum "reservation_type", enum_type: "reservation_type"
-    t.datetime "reserved_until"
+    t.datetime "check_out"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.enum "status", default: "ACTIVE", null: false, enum_type: "reservation_status"
+    t.datetime "check_in"
+    t.integer "lessor_id"
+  end
+
+  create_table "spots", force: :cascade do |t|
+    t.integer "lessor_id"
+    t.string "address"
+    t.string "city"
+    t.string "vehicle_type"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -70,5 +81,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_28_002450) do
     t.string "cognito_id"
   end
 
+  add_foreign_key "reservations", "lessors"
+  add_foreign_key "reservations", "spots"
   add_foreign_key "reservations", "users"
+  add_foreign_key "spots", "lessors"
 end

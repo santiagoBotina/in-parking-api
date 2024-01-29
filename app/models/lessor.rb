@@ -1,0 +1,2 @@
+class Lessor < ApplicationRecord
+end

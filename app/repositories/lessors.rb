@@ -1,7 +1,7 @@
 module Lessors
   class LessorsRepository < BusinessCore::Repository
     def initialize(
-      lessors_repo: Merchant
+      lessors_repo: Lessor
     )
       @lessors = lessors_repo
     end

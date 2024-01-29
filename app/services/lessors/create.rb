@@ -10,31 +10,31 @@ module Lessors
     end
 
     step :validate_input
-    step :validate_if_merchant_exists
+    step :validate_if_lessor_exists
     step :cognito_create_lessor
-    step :persist_merchant
+    step :persist_lessor
 
     private
 
     def validate_input(input)
-      $logger.info "Merchants::Create::validate_input - input: #{input}"
+      $logger.info "Lessors::Create::validate_input - input: #{input}"
 
-      check_schema_validation Contracts::CreateMerchantContract.call(input)
+      check_schema_validation Contracts::CreateLessorContract.call(input)
     end
 
-    def validate_if_merchant_exists(input)
-      $logger.info "Merchants::Create::validate_if_merchant_exists - input: #{input}"
+    def validate_if_lessor_exists(input)
+      $logger.info "Lessors::Create::validate_if_lessor_exists - input: #{input}"
 
       if lessor_exists_by_email({email: input[:email]})
-        $logger.info "Merchants::Create::validate_if_merchant_exists - merchant EXISTS"
+        $logger.info "Merchants::Create::validate_if_lessor_exists - lessor EXISTS"
         return fail_with_conflict"merchant"
       end
 
       Success(input)
     end
 
-    def cognito_create_merchant(input)
-      $logger.info "Merchants::Create::cognito_create_merchant - input: #{input}"
+    def cognito_create_lessor(input)
+      $logger.info "Lessors::Create::cognito_create_lessor - input: #{input}"
 
       sign_up_info = @cognito_client.create_user(input)
 
@@ -43,14 +43,14 @@ module Lessors
       Success(input.merge cognito_id: sign_up_info[:user_sub])
     end
 
-    def persist_merchant(input)
-      $logger.info 'Merchants::Create::create'
+    def persist_lessor(input)
+      $logger.info 'Lessors::Create::persist_lessor'
       begin
         input.delete :role
 
         @lessors_repository.create(input)
       rescue StandardError => e
-        $logger.info "Merchants::Create::create - error: #{e}"
+        $logger.info "Lessors::Create::persist_lessor - error: #{e}"
       end
     end
 

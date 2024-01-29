@@ -55,7 +55,7 @@ module Aws
     def self.confirm_sign_up(input)
       $logger.info "Aws::Cognito - confirm_sign_up - input: #{input}"
 
-      client_id = input[:role] === 'MERCHANT' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
+      client_id = input[:role] === 'LESSOR' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
 
       sign_up_info = {
         client_id: client_id,
@@ -110,7 +110,7 @@ module Aws
         },
         {
           name: 'custom:lessor_name',
-          value: input[:contact_name]
+          value: input[:lessor_name]
         },
         {
           name: 'custom:legal_id_type',
@@ -130,7 +130,7 @@ module Aws
         },
         {
           name: 'custom:city',
-          value: input[:contact_name]
+          value: input[:city]
         },
       ]
     end

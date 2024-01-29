@@ -3,11 +3,11 @@ module Auth
     def initialize(
       cognito_client: Aws::Cognito,
       update_user_use_case: Users::Update.new,
-      update_merchant_use_case: Merchants::Update.new
+      update_lessor_use_case: Lessors::Update.new
     )
       @cognito_client = cognito_client
       @update_user_use_case = update_user_use_case
-      @update_merchant_use_case = update_merchant_use_case
+      @update_lessor_use_case = update_lessor_use_case
       super
     end
 
@@ -43,7 +43,7 @@ module Auth
 
       role === 'CONSUMER' ?
         @update_user_use_case.call(input) :
-        @update_merchant_use_case.call(input)
+        @update_lessor_use_case.call(input)
     end
 
   end

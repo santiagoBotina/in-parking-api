@@ -11,7 +11,7 @@ module Lessors
 
     private
 
-    def get_merchant_by_email(input)
+    def get_lessor_by_email(input)
       email = input[:email]
 
       $logger.info "Lessors::Update::get_lessors_by_email - email: #{email}"
@@ -28,7 +28,7 @@ module Lessors
       end
     end
 
-    def update_merchant(input)
+    def update_lessor(input)
       $logger.info "Lessors::Update::update_lessor - input: #{input}"
 
       @lessors_repository.update(input)
