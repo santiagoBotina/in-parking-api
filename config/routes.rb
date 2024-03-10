@@ -8,9 +8,12 @@ Rails.application.routes.draw do
   resources :reservations
   resources :users
 
-  post '/auth/confirm_sign_up', to: 'auth#confirm_sign_up'
-  post '/auth/sign_up', to: 'auth#sign_up'
-  post '/auth/login', to: 'auth#login'
+  namespace :auth do
+    post 'confirm_sign_up', to: 'confirm_sign_up'
+    post 'sign_up', to: 'sign_up'
+    post 'login', to: 'login'
+  end
+
 
   # Defines the root path route ("/")
   # root "posts#index"

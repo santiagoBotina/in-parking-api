@@ -1,15 +1,14 @@
 module Reservations
   class Create < BusinessCore::Operation
-
     def initialize(
       reservations_repository: ReservationsRepository.new,
-      get_user_by_id: Users::GetById.new,
-      get_spot_by_id: Spots::GetById.new,
-      payments_repository: PaymentsRepository.new
+      users_repository: Users::UsersRepository.new,
+      spots_repository: Spots::SpotsRepository.new
+      #payments_repository: PaymentsRepository.new
     )
       @reservations_repository = reservations_repository
-      @get_spot_by_id = get_spot_by_id
-      @get_user_by_id = get_user_by_id
+      @spots_repository = spots_repository
+      @users_repository = users_repository
       super
     end
 
@@ -33,7 +32,7 @@ module Reservations
 
       user_id = input[:user_id]
 
-      user = @get_user_by_id.call({ id: user_id }).value_or(nil)
+      user = @users_repository.get_one({ id: user_id }).value_or(nil)
       return Failure({ status: :not_found, data: "User with ID: #{user_id} not found" }) if user.nil?
 
       Success(input)
@@ -42,10 +41,13 @@ module Reservations
     def validate_if_spot_is_available(input)
       $logger.info "Reservations::Create::validate_if_spot_is_available"
 
-      spot = @get_spot_by_id.call({ id: input[:spot_id] }).value_or(nil)
+      spot = @spots_repository.get_one({ id: input[:spot_id] }).value_or(nil)
 
-      return Failure({ status: :not_found, data: "Spot with ID: #{input[:spot_id]} not found" }) if spot.nil?
-      return Failure({ status: :unprocessable, data: "Spot with ID: #{spot.id} is not available" }) if spot.available == false
+      return Failure({ status: :not_found, data: "Spot with ID: #{input[:spot_id]} not found" }) \
+        if spot.nil?
+
+      return fail_with_bad_request("Spot with ID: #{input[:spot_id]} is not available") \
+        if spot.status != 'AVAILABLE'
 
       Success(input.merge spot: spot)
     end
@@ -54,7 +56,9 @@ module Reservations
       $logger.info "Reservations::Create::set_spot_as_reserved"
 
       spot = input[:spot]
-      spot.update(available: false)
+      spot.update(status: 'RESERVED')
+
+      input.delete(:spot)
 
       Success(input)
     end

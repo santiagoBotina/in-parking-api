@@ -11,11 +11,11 @@ module Spots
 
     private
 
-    def get_reservation(command)
+    def get_spot(command)
       $logger.info "Spot::GetByID::get_one - command: #{command}"
 
       spot = @spots_repository.get_one(command).value_or(nil)
-      if reservation.nil?
+      if spot.nil?
         error_message = ''
 
         command.each do |key, value|

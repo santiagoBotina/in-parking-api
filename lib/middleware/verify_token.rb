@@ -21,7 +21,6 @@ module Middleware
       token = request.headers['HTTP_AUTHORIZATION']
 
       unless token
-        byebug
         error = { status: :unauthorized, data: 'Invalid or missing token' }
 
         return [
