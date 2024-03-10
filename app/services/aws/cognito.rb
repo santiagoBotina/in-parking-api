@@ -55,10 +55,8 @@ module Aws
     def self.confirm_sign_up(input)
       $logger.info "Aws::Cognito - confirm_sign_up - input: #{input}"
 
-      client_id = input[:role] === 'LESSOR' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
-
       sign_up_info = {
-        client_id: client_id,
+        client_id: get_client_id(input[:role]),
         username: input[:email],
         confirmation_code: input[:code],
       }
@@ -79,11 +77,6 @@ module Aws
     end
 
     private
-
-    def self.calculate_secret_hash(username)
-      data = "#{username}#{CLIENT_ID}"
-      Base64.strict_encode64(OpenSSL::HMAC.digest('sha256', CLIENT_SECRET, data))
-    end
 
     def self.build_user_attributes(input)
       [

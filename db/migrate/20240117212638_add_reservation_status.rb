@@ -12,5 +12,4 @@ class AddReservationStatus < ActiveRecord::Migration[7.1]
       ALTER TABLE reservations DROP COLUMN status; 
     DDL
     end
-
 end

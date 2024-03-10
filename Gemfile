@@ -58,3 +58,5 @@ gem "dry-schema", "~> 1.13"
 gem "byebug", "~> 11.1"
 
 gem 'faraday'
+
+gem 'faker'

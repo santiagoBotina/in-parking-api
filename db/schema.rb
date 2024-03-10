@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_09_050012) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,8 +18,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "bank_account_type", ["SAVINGS", "CHECKING"]
   create_enum "legal_id_type", ["CC", "NIT", "PP", "CE", "TI"]
+  create_enum "payment_type", ["ONLINE", "CASH"]
   create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED"]
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
+  create_enum "spot_status", ["AVAILABLE", "RESERVED", "PENDING", "UNAVAILABLE"]
   create_enum "user_account_status", ["ACTIVE", "INACTIVE"]
 
   create_table "lessors", force: :cascade do |t|
@@ -44,6 +46,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
     t.index ["legal_id"], name: "index_lessors_on_legal_id", unique: true
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "lessor_id"
+    t.integer "reservation_id"
+    t.integer "spot_id"
+    t.integer "amount_in_cents"
+    t.string "status"
+    t.enum "payment_type", null: false, enum_type: "payment_type"
+    t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+  end
+
   create_table "reservations", force: :cascade do |t|
     t.integer "user_id"
     t.integer "spot_id"
@@ -64,6 +78,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
     t.string "vehicle_type"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.enum "status", null: false, enum_type: "spot_status"
   end
 
   create_table "users", force: :cascade do |t|
@@ -81,6 +96,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_013859) do
     t.string "cognito_id"
   end
 
+  add_foreign_key "payments", "lessors"
+  add_foreign_key "payments", "reservations"
+  add_foreign_key "payments", "spots"
+  add_foreign_key "payments", "users"
   add_foreign_key "reservations", "lessors"
   add_foreign_key "reservations", "spots"
   add_foreign_key "reservations", "users"
