@@ -12,6 +12,8 @@ module Reservations
       super
     end
 
+    #TODO: refactor this to use a db transaction when updating the spot
+
     step :validate_input
     step :validate_if_user_exists
     step :validate_if_spot_is_available

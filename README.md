@@ -1,24 +1,22 @@
-# README
+# IN PARKING API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+InParking API is a RESTful API that provides a way to manage parking lots and parking spaces.
+It is built using Ruby on Rails, AWS and PostgreSQL.
 
-Things you may want to cover:
+How to run it locally:
 
-* Ruby version
+Install postgreSQL on your machine or run a docker container with the following command:
 
-* System dependencies
+`docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres`
 
-* Configuration
+Then, follow these steps:
 
-* Database creation
+1. Clone the repository
+2. Install the required gems by running `bundle install`
+3. Create the database by running `rails db:create`
+4. Run the migrations by running `rails db:migrate`
+5. Create a .env file and replace the variables with your AWS credentials
+6. Run the server by running `dotenv -f .env rails s`
+7. The server will be running on `http://localhost:3000`
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+We can use Postman or any other API client to test the API.
