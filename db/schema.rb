@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_09_050012) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_26_201954) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,8 +18,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_09_050012) do
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "bank_account_type", ["SAVINGS", "CHECKING"]
   create_enum "legal_id_type", ["CC", "NIT", "PP", "CE", "TI"]
+  create_enum "payment_status_type", ["APPROVED", "PENDING", "DECLINED", "REFUNDED"]
   create_enum "payment_type", ["ONLINE", "CASH"]
-  create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED"]
+  create_enum "reservation_status", ["ACTIVE", "CANCELLED", "MISSED", "PENDING"]
   create_enum "reservation_type", ["ONE_TIME", "WEEKLY", "MONTHLY"]
   create_enum "spot_status", ["AVAILABLE", "RESERVED", "PENDING", "UNAVAILABLE"]
   create_enum "user_account_status", ["ACTIVE", "INACTIVE"]
@@ -52,7 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_09_050012) do
     t.integer "reservation_id"
     t.integer "spot_id"
     t.integer "amount_in_cents"
-    t.string "status"
+    t.enum "status", null: false, enum_type: "payment_status_type"
     t.enum "payment_type", null: false, enum_type: "payment_type"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
@@ -66,9 +67,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_09_050012) do
     t.datetime "check_out"
     t.datetime "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
-    t.enum "status", default: "ACTIVE", null: false, enum_type: "reservation_status"
+    t.enum "status", default: "PENDING", null: false, enum_type: "reservation_status"
     t.datetime "check_in"
-    t.integer "lessor_id"
+    t.integer "lessor_id", null: false
   end
 
   create_table "spots", force: :cascade do |t|

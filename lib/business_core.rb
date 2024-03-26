@@ -92,6 +92,17 @@ module BusinessCore
       end
     end
 
+    def get_one_with_lock(command)
+      begin
+        $logger.info "#{self.class}::get_one_with_lock - command: #{command}"
+
+        result = @repository.lock.find_by(command)
+        Maybe(result)
+      rescue StandardError => e
+        fail_with_db_error(@entity, e.message, HTTP_METHODS[:GET])
+      end
+    end
+
     def create(input)
       begin
         $logger.info "#{self.class}::create - input: #{input}"
