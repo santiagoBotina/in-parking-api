@@ -1,35 +1,21 @@
 module Reservations
   class UpdateAfterPayment < BusinessCore::Operation
-    def initialize(
-      reservations_repository: ReservationsRepository.new,
-      payments_repository: Payments::PaymentsRepository.new
-    )
-      @reservations_repository = reservations_repository
-      @payments_repository = payments_repository
+    def initialize
       super
     end
 
-    step :get_reservation
     step :validate_online_payment_status
-    step :update_reservation
+    step :reserve_spot_and_update_reservation
 
     private
 
-    def get_reservation(input)
-      $logger.info 'Reservation::UpdateAfterPayment::get_reservation'
-
-      reservation = @reservations_repository
-                      .get_one({id: input.fetch(:reservation_id)})
-                      .value!
-
-      Success(input.merge reservation: reservation)
-    end
-
     def validate_online_payment_status(input)
-      status = input.fetch(:payment).fetch(:status)
-      payment_type = input.fetch(:payment).fetch(:payment_type)
+      $logger.info "Reservation::UpdateAfterPayment::validate_online_payment_status - input: #{input}"
 
-      unless status != 'APPROVED' && payment_type == 'ONLINE'
+      status = input.fetch(:payment).status
+      payment_type = input.fetch(:payment).payment_type
+
+      if payment_type == 'ONLINE' && status != 'APPROVED'
         return Failure({
           status: :bad_request,
           data: 'Status must be of APPROVED for ONLINE payments'
@@ -39,11 +25,17 @@ module Reservations
       Success(input)
     end
 
-    def update_reservation(input)
-      $logger.info 'Reservation::UpdateAfterPayment::update_reservation'
+    def reserve_spot_and_update_reservation(input)
+      $logger.info 'Reservation::UpdateAfterPayment::reserve_spot'
 
-      reservation = input.fetch(:reservation)
-      reservation.update!(status: 'ACTIVE')
+      ActiveRecord::Base.transaction do
+        spot = Spot.find_by({ id: input[:spot_id] })
+        reservation = input[:reservation]
+        raise ActiveRecord::Rollback if spot.nil? || spot.status != 'AVAILABLE'
+
+        spot.update!(status: 'RESERVED')
+        reservation.update!(status: 'ACTIVE')
+      end
 
       Success(input)
     end

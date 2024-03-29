@@ -112,7 +112,7 @@ module BusinessCore
         unless result.save!
           return fail_with_db_error(@entity, 'There was an error processing the request')
         end
-        Success({ status: :ok, data: result })
+        Maybe(result)
       rescue StandardError => e
         fail_with_db_error(@entity, e.message, HTTP_METHODS[:POST])
       end

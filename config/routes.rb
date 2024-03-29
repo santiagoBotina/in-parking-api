@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :reservations
   resources :users
+  resources :payments
 
   namespace :auth do
     post 'confirm_sign_up', to: 'confirm_sign_up'

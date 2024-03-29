@@ -1,6 +1,17 @@
 module Payments
-  STATUSES = %w'APPROVED PENDING DECLINED REFUNDED'.freeze
-  PAYMENT_TYPES = %w'ONLINE CASH'.freeze
+  PAYMENT_TYPES_ARR = %w'ONLINE OFFLINE'.freeze
+
+  module PAYMENT_TYPES
+    ONLINE = 'ONLINE'.freeze
+    OFFLINE = 'OFFLINE'.freeze
+  end
+
+  module STATUSES
+    APPROVED = 'APPROVED'.freeze
+    PENDING = 'PENDING'.freeze
+    DECLINED = 'DECLINED'.freeze
+    REFUNDED = 'REFUNDED'.freeze
+  end
 
   module Contracts
     CreatePaymentSchema = Dry::Schema.Params do
@@ -9,10 +20,7 @@ module Payments
       required(:spot_id).filled(:integer)
       required(:lessor_id).filled(:integer)
       required(:amount_in_cents).filled(:integer)
-      required(:status).filled(:string) { included_in?(STATUSES) }
-      required(:payment_type).filled(:string) { included_in?(PAYMENT_TYPES) }
-      required(:check_in).filled(:date_time)
-      required(:check_out).filled(:date_time)
+      required(:payment_type).filled(:string) { included_in?(PAYMENT_TYPES_ARR) }
     end
   end
 end
