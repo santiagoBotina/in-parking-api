@@ -4,7 +4,6 @@ module Reservations
 
     def perform(input)
       $logger.info "Reservations::UpdateReservationJob::perform - input: #{input}"
-
       UpdateAfterPayment.new.call(input)
     end
   end

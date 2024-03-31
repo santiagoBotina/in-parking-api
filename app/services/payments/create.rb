@@ -13,6 +13,7 @@ module Payments
 
     step :validate_input
     step :validate_reservation_exists
+    step :verify_if_payment_already_exists
     step :persist_payment
     tee :update_reservation
     map :return_payment
@@ -27,7 +28,7 @@ module Payments
       $logger.info "Payments::Create::validate_reservation_exists"
 
       reservation = @reservations_repo
-                      .get_one({ id: input.fetch(:reservation_id) })
+                      .get_one_by_id_with_user(input.fetch(:reservation_id))
                       .value_or(nil)
 
       return Failure({
@@ -36,6 +37,20 @@ module Payments
       }) if reservation.nil?
 
       Success(input.merge reservation: reservation)
+    end
+
+    def verify_if_payment_already_exists(input)
+      $logger.info "Payments::Create::verify_if_payment_already_exists"
+      payment = @payments_repo
+                  .get_one({ reservation_id: input.fetch(:reservation_id) })
+                  .value_or(nil)
+
+      return Failure({
+        status: :bad_request,
+        data: "Payment for reservation with id: #{input.fetch(:reservation_id)} already exists"
+      }) if payment
+
+      Success(input)
     end
 
     def persist_payment(input)

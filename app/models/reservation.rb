@@ -1,5 +1,5 @@
 class Reservation < ApplicationRecord
-  has_one :user, dependent: :destroy
+  belongs_to :user
 
   enum reservation_type: {
     ONE_TIME: "ONE_TIME",

@@ -27,17 +27,24 @@ module Reservations
 
     def reserve_spot_and_update_reservation(input)
       $logger.info 'Reservation::UpdateAfterPayment::reserve_spot'
+      begin
+        ActiveRecord::Base.transaction do
+          spot = Spot.find_by({ id: input[:spot_id] })
+          reservation = input[:reservation]
+          raise ActiveRecord::Rollback if spot.nil? || spot.status != 'AVAILABLE'
 
-      ActiveRecord::Base.transaction do
-        spot = Spot.find_by({ id: input[:spot_id] })
-        reservation = input[:reservation]
-        raise ActiveRecord::Rollback if spot.nil? || spot.status != 'AVAILABLE'
+          spot.update!(status: 'RESERVED')
+          reservation.update!(status: 'ACTIVE')
+        end
 
-        spot.update!(status: 'RESERVED')
-        reservation.update!(status: 'ACTIVE')
+        NotifyReservationIsActiveMailer
+          .notify({reservation: input[:reservation],success: true}).deliver_later
+
+        Success(input)
+      rescue => e
+        NotifyReservationIsActiveMailer
+          .notify({reservation: input[:reservation],success: false}).deliver_later
       end
-
-      Success(input)
     end
   end
 end

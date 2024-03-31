@@ -33,7 +33,7 @@ module Reservations
                .value_or(nil)
 
       if spot.nil? || spot.status != 'AVAILABLE'
-        Failure(:spot_not_available)
+        return fail_with_bad_request('Spot is not available')
       end
 
       Success(input.merge spot: spot)
@@ -41,7 +41,10 @@ module Reservations
 
     def persist_reservation(input)
       $logger.info "Reservations::Create::persist_reservation"
-      @reservations_repository.create(build_reservation(input))
+      reservation = @reservations_repository
+                      .create(build_reservation(input)).value!
+
+      Success({ status: :created, data: reservation })
     end
 
     def build_reservation(input)
