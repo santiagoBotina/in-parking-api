@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="in_parking_back_dev@localhost" uuid="870b0139-e5fc-4c6a-93a5-fd6f3fe39020">
+    <data-source source="LOCAL" name="in_parking@localhost" uuid="9f1f50f5-62d7-449b-9fab-be75dc7945e1">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/in_parking_back_dev</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:5432/in_parking</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

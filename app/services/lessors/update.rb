@@ -1,9 +1,9 @@
 module Lessors
-  class Update < BusinessCore::Operation
+  class Update < Core::Operation
 
     def initialize(lessors_repository: LessorsRepository.new)
       @lessors_repository = lessors_repository
-      super
+      super()
     end
 
     step :get_lessor_by_email

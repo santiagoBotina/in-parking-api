@@ -3,6 +3,7 @@ module ControllerHelper
 
   def unwrap_monad_result(result)
     $logger.info 'ControllerUnwrapUtil::unwrap'
+    $logger.info "ControllerUnwrapUtil::unwrap: #{result}"
 
     if result.success?
       render json: result.value!, status: result.value![:status]

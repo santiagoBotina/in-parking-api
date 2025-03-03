@@ -1,10 +1,10 @@
 module Spots
-  class GetById < BusinessCore::Operation
+  class GetById < Core::Operation
     def initialize(
       spots_repository: SpotsRepository.new
     )
       @spots_repository = spots_repository
-      super
+      super()
     end
 
     step :get_spot

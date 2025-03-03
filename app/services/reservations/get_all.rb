@@ -1,8 +1,8 @@
 module Reservations
-  class GetAll < BusinessCore::Operation
+  class GetAll < Core::Operation
     def initialize(reservations_repository: ReservationsRepository.new)
       @reservations_repository = reservations_repository
-      super
+      super()
     end
 
     step :check_reservations

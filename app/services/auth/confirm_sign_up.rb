@@ -1,5 +1,5 @@
 module Auth
-  class ConfirmSignUp < BusinessCore::Operation
+  class ConfirmSignUp < Core::Operation
     def initialize(
       cognito_client: Aws::Cognito,
       update_user_use_case: Users::Update.new,
@@ -8,7 +8,7 @@ module Auth
       @cognito_client = cognito_client
       @update_user_use_case = update_user_use_case
       @update_lessor_use_case = update_lessor_use_case
-      super
+      super()
     end
 
     step :validate_input
@@ -45,6 +45,5 @@ module Auth
         @update_user_use_case.call(input) :
         @update_lessor_use_case.call(input)
     end
-
   end
 end

@@ -1,12 +1,12 @@
 module Auth
-  class Create < BusinessCore::Operation
+  class Create < Core::Operation
     def initialize(
       create_user: Users::Create.new,
       create_lessor: Lessors::Create.new
     )
       @create_user = create_user
       @create_lessor = create_lessor
-      super
+      super()
     end
 
     step :call_operation

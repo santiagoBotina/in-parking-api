@@ -1,15 +1,16 @@
 module Lessors
-  class Create < BusinessCore::Operation
+  class Create < Core::Operation
     def initialize(
       lessors_repository: LessorsRepository.new,
-      cognito_client: Aws::Cognito
+      cognito_factory: Aws::CognitoFactory
     )
       @lessors_repository = lessors_repository
-      @cognito_client = cognito_client
-      super
+      @cognito_factory = cognito_factory
+      super()
     end
 
     step :validate_input
+    map :get_cognito_client
     step :validate_if_lessor_exists
     step :cognito_create_lessor
     step :persist_lessor
@@ -20,6 +21,14 @@ module Lessors
       $logger.info "Lessors::Create::validate_input - input: #{input}"
 
       check_schema_validation Contracts::CreateLessorContract.call(input)
+    end
+
+    def get_cognito_client(input)
+      $logger.info "Lessors::Create::get_cognito_client - input: #{input}"
+
+      @cognito_client ||= @cognito_factory.get_cognito
+
+      input
     end
 
     def validate_if_lessor_exists(input)
@@ -48,7 +57,12 @@ module Lessors
       begin
         input.delete :role
 
-        @lessors_repository.create(input)
+        lessor = @lessors_repository.create(input)
+
+        return Success({
+          status: :created,
+          data: lessor
+        })
       rescue StandardError => e
         $logger.info "Lessors::Create::persist_lessor - error: #{e}"
       end
@@ -57,6 +71,5 @@ module Lessors
     def lessor_exists_by_email(command)
       @lessors_repository.get_one(command).value_or(nil)
     end
-
   end
 end

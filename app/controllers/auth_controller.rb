@@ -35,5 +35,4 @@ class AuthController < ApplicationController
 
     unwrap_monad_result(@confirm_sign_up.call(body))
   end
-
 end

@@ -1,10 +1,10 @@
 module Auth
-  class Login < BusinessCore::Operation
+  class Login < Core::Operation
     def initialize(
       cognito_client: Aws::Cognito
     )
       @cognito_client = cognito_client
-      super
+      super()
     end
 
     step :validate_input
@@ -50,6 +50,5 @@ module Auth
         PASSWORD: input[:password]
       }
     end
-
   end
 end

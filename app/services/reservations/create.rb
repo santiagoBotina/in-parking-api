@@ -1,5 +1,5 @@
 module Reservations
-  class Create < BusinessCore::Operation
+  class Create < Core::Operation
     def initialize(
       reservations_repository: ReservationsRepository.new,
       users_repository: Users::UsersRepository.new,
@@ -11,7 +11,7 @@ module Reservations
       @spots_repository = spots_repository
       @users_repository = users_repository
       @update_reservation_job = update_reservation_job
-      super
+      super()
     end
 
     step :validate_input

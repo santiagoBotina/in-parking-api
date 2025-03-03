@@ -1,11 +1,11 @@
 module Reservations
-  class GetById < BusinessCore::Operation
+  class GetById < Core::Operation
 
     def initialize(
       reservations_repository: ReservationsRepository.new
     )
       @reservations_repository = reservations_repository
-      super
+      super()
     end
 
     step :get_reservation

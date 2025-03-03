@@ -1,5 +1,5 @@
 module Payments
-  class PaymentsRepository < BusinessCore::Repository
+  class PaymentsRepository < Core::Repository
     def initialize(
       repository: Payment,
       entity: 'payments'

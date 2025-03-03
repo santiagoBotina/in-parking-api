@@ -2,7 +2,7 @@ require 'byebug'
 
 module Middleware
   class VerifyToken
-    EXCLUDED_PATHS = %w[/auth/login /auth/confirm_sign_up /auth/sign_up].freeze
+    EXCLUDED_PATHS = %w[/users /auth/login /auth/confirm_sign_up /auth/sign_up].freeze
     AWS_VERIFY_TOKEN = "https://cognito-idp.#{ENV['AWS_REGION']}.amazonaws.com/#{ENV['AWS_COGNITO_USERS_POOL_ID']}/.well-known/jwks.json"
 
     def initialize(app)

@@ -1,9 +1,8 @@
 module Users
-  class GetById < BusinessCore::Operation
-
+  class GetById < Core::Operation
     def initialize(users_repository: UsersRepository.new)
       @users_repository = users_repository
-      super
+      super()
     end
 
     step :get_user
@@ -22,13 +21,12 @@ module Users
         end
 
         Failure({
-                  status: :not_found,
-                  data: error_message
-                })
+          status: :not_found,
+          data: error_message
+        })
       else
         Success({ status: :ok, data: user })
       end
     end
-
   end
 end

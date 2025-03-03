@@ -3,7 +3,7 @@ require_relative 'definitions.rb'
 module Aws
   class Cognito
 
-    @client = Aws::CognitoIdentityProvider::Client.new(
+    @client ||= Aws::CognitoIdentityProvider::Client.new(
       region: REGION,
       credentials: Aws::Credentials.new(
         ACCESS_KEY_ID,

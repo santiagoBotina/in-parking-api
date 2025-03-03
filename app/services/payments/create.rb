@@ -1,5 +1,5 @@
 module Payments
-  class Create < BusinessCore::Operation
+  class Create < Core::Operation
     def initialize(
       payments_repo: PaymentsRepository.new,
       reservations_repo: Reservations::ReservationsRepository.new,
@@ -8,7 +8,7 @@ module Payments
       @payments_repo = payments_repo
       @reservations_repo = reservations_repo
       @update_reservation_job = update_reservation_job
-      super
+      super()
     end
 
     step :validate_input

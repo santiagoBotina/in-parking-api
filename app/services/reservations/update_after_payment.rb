@@ -1,7 +1,7 @@
 module Reservations
-  class UpdateAfterPayment < BusinessCore::Operation
+  class UpdateAfterPayment < Core::Operation
     def initialize
-      super
+      super()
     end
 
     step :validate_online_payment_status
