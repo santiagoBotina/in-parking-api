@@ -2,7 +2,6 @@ require 'faker'
 
 5.times do |i|
   User.create(
-    id: i,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.first_name,
     legal_id_type: 'CC',
@@ -16,7 +15,6 @@ require 'faker'
   )
 
   Lessor.create(
-    id: i,
     legal_name: Faker::Company.name,
     legal_id_type: 'NIT',
     legal_id: Faker::Number.number,
@@ -36,7 +34,6 @@ require 'faker'
   )
 
   Spot.create(
-    id: i,
     lessor_id: i,
     address: Faker::Address.full_address,
     city: Faker::Address.city,
@@ -45,7 +42,6 @@ require 'faker'
   )
 
   Reservation.create(
-    id: i,
     user_id: i,
     spot_id: i,
     vehicle_plate: Faker::Vehicle.license_plate,
@@ -57,7 +53,6 @@ require 'faker'
   )
 
   Payment.create(
-    id: i,
     user_id: i,
     reservation_id: i,
     lessor_id: i,
