@@ -10,10 +10,26 @@ services:
     ports:
       - "${DATABASE_PORT}:${DATABASE_PORT}"
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
     command: -p ${DATABASE_PORT}
     expose:
       - "${DATABASE_PORT}"
+
+  test_database:
+    restart: on-failure
+    image: postgres:14-alpine
+    container_name: test_db
+    environment:
+      POSTGRES_USER: ${DATABASE_TEST_USER}
+      POSTGRES_PASSWORD: ${DATABASE_TEST_PWD}
+      POSTGRES_DB: ${DATABASE_TEST_NAME}
+    ports:
+      - "${DATABASE_TEST_PORT}:${DATABASE_TEST_PORT}"
+    volumes:
+      - ./data/test_db:/var/lib/postgresql/data
+    command: -p ${DATABASE_TEST_PORT}
+    expose:
+      - "${DATABASE_TEST_PORT}"
 
   localstack:
     image: localstack/localstack:3.5.0
