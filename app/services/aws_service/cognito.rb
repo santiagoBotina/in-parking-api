@@ -131,6 +131,5 @@ module AwsService
     def self.get_client_id(role)
       role === 'LESSOR' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
     end
-
   end
 end
