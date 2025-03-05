@@ -13,9 +13,6 @@ development:
   host: <%= ENV.fetch('DATABASE_HOST') %>
   port: <%= ENV.fetch('DATABASE_PORT') %>
 
-  # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
-
 test:
   <<: *default
   database: <%= ENV.fetch('DATABASE_TEST_NAME') %>

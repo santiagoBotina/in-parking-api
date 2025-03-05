@@ -30,6 +30,11 @@ jobs:
       DATABASE_TEST_NAME: "in_parking_test"
       DATABASE_TEST_HOST: "localhost"
       DATABASE_TEST_PORT: "5432"
+      DATABASE_PWD: "123456"
+      DATABASE_USER: "in_parking"
+      DATABASE_NAME: "in_parking"
+      DATABASE_HOST: "localhost"
+      DATABASE_PORT: "5432"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -40,7 +45,7 @@ jobs:
           bundler-cache: true
       # Add or replace database setup steps here
       - name: Set up database schema
-        run: bin/rails db:schema:load
+        run: bin/rails db:schema:load RAILS_ENV=test
       # Add or replace test runners here
       - name: Run tests
         run: bundle exec rspec
