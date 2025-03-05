@@ -32,7 +32,7 @@ module Reservations
                .get_one_with_lock({id: input[:spot_id]})
                .value_or(nil)
 
-      if spot.nil? || spot.status != 'AVAILABLE'
+      if spot.nil? || spot.status != Spots::Definitions::Statuses::AVAILABLE
         return fail_with_bad_request('Spot is not available')
       end
 
