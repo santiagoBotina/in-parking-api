@@ -35,6 +35,14 @@ jobs:
       DATABASE_NAME: "in_parking"
       DATABASE_HOST: "localhost"
       DATABASE_PORT: "5432"
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: your_access_key_id
+      AWS_SECRET_ACCESS_KEY: your_secret_access_key
+      AWS_COGNITO_CONSUMERS_POOL_ID: your_pool_id
+      AWS_COGNITO_CONSUMERS_CLIENT_ID: your_client_id
+      AWS_COGNITO_LESSORS_POOL_ID: dummy
+      AWS_COGNITO_LESSORS_CLIENT_ID: dummy
+      AWS_COGNITO_USERS_AUTH_FLOW: dummy
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
