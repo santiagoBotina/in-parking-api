@@ -2,10 +2,10 @@ module AWS
   class Cognito
 
     @client ||= Aws::CognitoIdentityProvider::Client.new(
-      region: AWS::REGION,
+      region: AWS::Definitions::REGION,
       credentials: Aws::Credentials.new(
-        AWS::ACCESS_KEY_ID,
-        AWS::SECRET_ACCESS_KEY
+        AWS::Definitions::ACCESS_KEY_ID,
+        AWS::Definitions::SECRET_ACCESS_KEY
       )
     )
 
@@ -127,7 +127,7 @@ module AWS
     end
 
     def self.get_client_id(role)
-      role === 'LESSOR' ? AWS::LESSOR_CLIENT_ID : AWS::CONSUMER_CLIENT_ID
+      role === 'LESSOR' ? AWS::Definitions::LESSOR_CLIENT_ID : AWS::Definitions::CONSUMER_CLIENT_ID
     end
   end
 end
