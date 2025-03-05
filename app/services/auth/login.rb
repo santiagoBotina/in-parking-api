@@ -1,7 +1,7 @@
 module Auth
   class Login < Core::Operation
     def initialize(
-      cognito_client: Aws::Cognito
+      cognito_client: AWS::Cognito
     )
       @cognito_client = cognito_client
       super()
@@ -22,15 +22,15 @@ module Auth
       auth_result = @cognito_client.authenticate(build_auth_object(input), input[:role])
 
       Success({status: :ok, data: auth_result})
-    rescue Aws::CognitoIdentityProvider::Errors::UserNotFoundException
+    rescue AWS::CognitoIdentityProvider::Errors::UserNotFoundException
       $logger.error "Auth::Login::authenticate::ERROR - USER NOT FOUND"
 
       fail_with_bad_request('User not found')
-    rescue Aws::CognitoIdentityProvider::Errors::NotAuthorizedException
+    rescue AWS::CognitoIdentityProvider::Errors::NotAuthorizedException
       $logger.error "Auth::Login::authenticate::ERROR - NOT AUTHORIZED"
 
       fail_with_unauthorized('Not authorized')
-    rescue Aws::CognitoIdentityProvider::Errors::UserNotConfirmedException
+    rescue AWS::CognitoIdentityProvider::Errors::UserNotConfirmedException
       $logger.error "Auth::Login::authenticate::ERROR - USER NOT CONFIRMED"
 
       fail_with_forbidden('User is not confirmed')

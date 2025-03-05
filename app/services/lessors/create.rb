@@ -2,7 +2,7 @@ module Lessors
   class Create < Core::Operation
     def initialize(
       lessors_repository: LessorsRepository.new,
-      cognito_factory: Aws::CognitoFactory
+      cognito_factory: AWS::CognitoFactory
     )
       @lessors_repository = lessors_repository
       @cognito_factory = cognito_factory

@@ -2,7 +2,7 @@ module Users
   class Create < Core::Operation
     def initialize(
       users_repository: UsersRepository.new,
-      cognito_factory: Aws::CognitoFactory
+      cognito_factory: AWS::CognitoFactory
     )
       @users_repository = users_repository
       @cognito_factory = cognito_factory

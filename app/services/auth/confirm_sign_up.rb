@@ -1,7 +1,7 @@
 module Auth
   class ConfirmSignUp < Core::Operation
     def initialize(
-      cognito_client: Aws::Cognito,
+      cognito_client: AWS::Cognito,
       update_user_use_case: Users::Update.new,
       update_lessor_use_case: Lessors::Update.new
     )
