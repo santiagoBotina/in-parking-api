@@ -1,5 +1,3 @@
-require_relative 'definitions.rb'
-
 module AWS
   class Cognito
 
