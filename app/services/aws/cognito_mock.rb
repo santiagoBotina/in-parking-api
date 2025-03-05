@@ -1,4 +1,4 @@
-module Aws
+module AwsService
   class CognitoMock
     def self.authenticate(user_object, _role)
       $logger.info "Aws::CognitoMock - authenticate - user_object: #{user_object}"

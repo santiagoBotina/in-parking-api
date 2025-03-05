@@ -1,4 +1,4 @@
-module Aws
+module AwsService
     REGION = ENV['AWS_REGION']
 
     CONSUMER_POOL_ID = ENV['AWS_COGNITO_CONSUMERS_POOL_ID']

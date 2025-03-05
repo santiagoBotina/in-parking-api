@@ -1,6 +1,6 @@
 require_relative 'definitions.rb'
 
-module Aws
+module AwsService
   class Cognito
 
     @client ||= Aws::CognitoIdentityProvider::Client.new(
