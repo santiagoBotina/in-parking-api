@@ -2,10 +2,10 @@ module AWS
   class Cognito
 
     @client ||= Aws::CognitoIdentityProvider::Client.new(
-      region: REGION,
+      region: AWS::REGION,
       credentials: Aws::Credentials.new(
-        ACCESS_KEY_ID,
-        SECRET_ACCESS_KEY
+        AWS::ACCESS_KEY_ID,
+        AWS::SECRET_ACCESS_KEY
       )
     )
 
@@ -14,7 +14,7 @@ module AWS
 
       auth_object = {
         client_id: get_client_id(role),
-        auth_flow: AUTH_FLOW,
+        auth_flow: AWS::AUTH_FLOW,
         auth_parameters: user_object
       }
 
@@ -127,7 +127,7 @@ module AWS
     end
 
     def self.get_client_id(role)
-      role === 'LESSOR' ? LESSOR_CLIENT_ID : CONSUMER_CLIENT_ID
+      role === 'LESSOR' ? AWS::LESSOR_CLIENT_ID : AWS::CONSUMER_CLIENT_ID
     end
   end
 end
