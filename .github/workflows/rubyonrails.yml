@@ -25,11 +25,11 @@ jobs:
     env:
       RAILS_ENV: test
       APP_ENV: test
-      DATABASE_PWD: "123456"
-      DATABASE_USER: "in_parking"
-      DATABASE_NAME: "in_parking_test"
-      DATABASE_HOST: "localhost"
-      DATABASE_PORT: "5432"
+      DATABASE_TEST_PWD: "123456"
+      DATABASE_TEST_USER: "in_parking"
+      DATABASE_TEST_NAME: "in_parking_test"
+      DATABASE_TEST_HOST: "localhost"
+      DATABASE_TEST_PORT: "5432"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
