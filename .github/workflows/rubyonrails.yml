@@ -24,7 +24,12 @@ jobs:
           POSTGRES_PASSWORD: 123456
     env:
       RAILS_ENV: test
-      DATABASE_URL: "postgres://in_parking:password@localhost:5432/in_parking_test"
+      APP_ENV: test
+      DATABASE_PWD: "123456"
+      DATABASE_USER: "in_parking"
+      DATABASE_NAME: "in_parking_test"
+      DATABASE_HOST: "localhost"
+      DATABASE_PORT: "5432"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

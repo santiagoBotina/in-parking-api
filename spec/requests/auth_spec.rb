@@ -1,6 +1,4 @@
-require 'rails_helper'
-
-RSpec.describe "Auths", type: :request do
+RSpec.describe 'Auths', type: :request do
   let(:valid_user_params) do
     {
       email: 'test@example.com',
